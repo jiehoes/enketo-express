@@ -1,0 +1,26 @@
+extends ../layout
+
+block style
+  link(rel='stylesheet', media='all', type='text/css' href=`${basePath}/css/theme-${defaultTheme}.css`) 
+  link(rel='stylesheet', media='print', type='text/css' href=`${basePath}/css/theme-${defaultTheme}.print.css`) 
+
+block script
+  - var suffix = (type && type !== 'preview' && type !== 'single') ? '-' + type : ''
+  if environment == 'production'
+    script(src=`${basePath}/js/enketo-webform${suffix}-bundle.min.js`)
+  else
+    script(src=`${basePath}/js/enketo-webform${suffix}-dev-bundle.js`)
+ 
+block content
+  include component/_notification
+  .main
+    article.paper
+      include component/_form-header
+      | !{form}
+      unless form
+        .form__loader
+          .form__loader__image
+      include component/_form-footer
+  if manifest
+    include component/_side-slider
+  include component/_feedback-bar
